@@ -1,0 +1,84 @@
+Creating Demo Shop Account:
+flow start CreateNewAccount accountName: DemoShop, shareWith: [Delivery,Buyer]
+
+Adding Demo product:
+flow start AddItem key: e52232e1-0ded-4587-999f-4dd135a4a94f, productName: Demo, productDetails: This is a demo product, barCode: 789-789-789-789, shopAccountName: DemoShop
+
+Adding Delivery named account:
+flow start CreateNewAccount accountName: Delivery, shareWith: [Shop,Buyer,Bank]
+
+Adding DemoGuy account as demo delivery person:
+flow start CreateNewAccount accountName: DemoGuy, shareWith: [Shop,Buyer]
+
+Vault Query for Item State:
+run vaultQuery contractStateType: com.template.states.ItemState
+
+Adding Demo Buyer Account:
+flow start CreateNewAccount accountName: DemoBuyer, shareWith: [Shop,Delivery]
+
+Placing Demo Order:
+flow start PlaceOrder key: e52232e1-0ded-4587-999f-4dd135a4a94f, buyerAccountName: DemoBuyer, shopAccountName: DemoShop, deliveryAddress: DemoAddress
+
+RequestDeliver:
+flow start RequestDelivery trackingId: 10d7feaf-52c2-4b00-8053-83463021496f, sender: DemoShop, receiver: Delivery
+
+Bank Node:
+flow start CreateNewAccount accountName: Bank, shareWith: [Buyer,Shop,Delivery]
+flow start IssueCoin value: 10000, sender: Bank, receiver: Bhaskar
+
+BuyerNode:
+flow start MakePayment linearId: e52232e1-0ded-4587-999f-4dd135a4a94f, accountName: Bhaskar, bankAccountName: Bank, amtToShop: 50, amtToDelivery: 25
+
+
+flow start CreateNewAccount accountNa
+
+################################################################################################################
+TODO: Adding setup steps. Including creating Delivery named account
+TODO: Adding basic running instructions
+
+
+
+
+
+
+
+##################################################################################################################
+Setup Steps:
+
+1. git clone the repository
+2. cd into the repository
+3. ./gradlew clean deployNodes
+
+4. In the Delivery Node:
+   >>>flow start CreateNewAccount accountName: Delivery, shareWith: [Shop,Buyer]
+
+5. ./gradlew runTemplateServer
+
+Running Steps:
+
+1. Initially logged into buyer node
+    a. Create a buyer account
+
+2. Switch to shop node using the switch-party api
+    a. Create a new shop account
+    b. Add some demo products into the inventory
+    c. Check for the product in inventory
+
+3. Switch to buyer node using the switch-party api
+    a. Place order for an item
+
+4. Switch back to Shop node
+    a. View list of all received orders by getorders api
+    b. Accept a particular order
+
+5. Switch to Delivery noed
+    a. Create a demo DeliveryPerson account
+    b. View all the delivery requests by receiveddeliveryrequest api
+    c. Accept a particular delivery
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+1. Delivery Node
+    flow start CreateNewAccount accountName: Delivery, shareWith: [Bank,Buyer,Shop]
+
+2. Bank Node
+    flow start CreateNewAccount accountName: Bank, shareWith: [Shop,Buyer,Delivery]

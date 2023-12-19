@@ -1,0 +1,131 @@
+/whoAmI
+Body: Null
+Returns which node is it connected to.
+--------------------------------------
+
+/switch-party/{party}
+pathvariable: The name of the party to connect to
+Connects to a different node
+--------------------------------------
+
+/createShopAccount
+Body: {"shopAccountName":"String"}
+Creates a shop with the given accountName
+--------------------------------------
+
+/createUserAccount
+Body: {"userName":"String"}
+Creates a buyer account with the given name
+--------------------------------------
+
+/createDeliveryAccount
+Body: {"deliveryPersonName":"String"}
+Creates a delivery person account with the given name
+--------------------------------------
+
+/addItem
+Body: {
+	"productName":"String"
+	"productDetails":"String"
+	"price":double
+	"expiryDate":"String"
+	"quantity":int
+	"barCode":"String"
+	"shopAccountName":"String"
+	}
+Creates and adds item to the inventory of the mentioned shop account and returns the product key which is used to uniqiuely identify the product
+-----------------------------------------------------------------------
+
+/viewInventory/{shopAccountName}
+Pathvariable: shopAccountName
+Returns a list of the inventory of the specified account name
+--------------------------------------
+
+/placeOrder
+Body: {
+	"productKey":"String"
+	"buyerAccountName":"String"
+	"shopAccountName":"String"
+	"deliveryAddress":"String"
+	"amtToShop":double
+	"amtToDelivery":double
+	}
+Places order for the specified product. It returns the trackingId/orderId (both term used with same meaning) of the placed order
+--------------------------------------------------------------------------
+
+/getOrders/{shopAccountName}
+PathVariable: shopAccountName
+Returns list of received orders by the shop whoes account name is specified
+----------------------------------------------------------------------------
+
+/requestDelivery
+Body: {
+	"trackingId":"String"
+	"shopName":"String"
+	}
+Request for delivery service for the order whoes tracking id is mentioned. The shop issuing the request must specify it's account name
+----------------------------------------------------------------------------
+
+/acceptDelivery
+Body: {
+	"orderId":"String"
+	"barCode":"String"
+	"acceptor":"String"
+	"shopAccountName":"String"	
+	}
+This is called by the delivery person accepting the order. The account name of the accepting account must be specified in acceptor field. The acceptor scans the barCode and the scaned code is send in barCode field
+----------------------------------------------------------------------------
+
+/receivedDeliveryRequest
+Returns the list of Delivery Requests as received by the Delivery node
+
+----------------------------------------------------------------------------
+
+/getLeftHandovers/{deliveryAccountName}
+Pathvariable: Delivery person account name
+Returns the list of left over items which are yet to be handed over to the buyer
+----------------------------------------------------------------------------
+
+/handoverItem
+Body: {
+	"trackingId":"String"
+	"deliveryAccountName":"String"
+	}
+This is called when the item is handed over to the buyer of the product
+----------------------------------------------------------------------------
+
+/verifyProduct
+Body: {
+	"productKey":"String"
+	"barCode":"String"
+	}
+This is called by the buyer to verify the product he received
+----------------------------------------------------------------------------
+
+/getBalance/{accountName}
+pathvariable: Account Name
+Returns the balance of the account 
+----------------------------------------------------------------------------
+
+/issueCoin
+Body: {
+	"accountName":"String",
+	"value":double
+	}
+Issues coin of specified value to account specified in accountName
+----------------------------------------------------------------------------
+
+/rejectOrder
+Body: {
+	"productKey":"String"
+	"accountName":"String"
+	}
+Reject order with the specific product key by the shop whoes accountName is specified
+----------------------------------------------------------------------------
+
+/requestRefund
+Body: {
+	"productKey":"String"
+	"accountName":"String"
+	}
+Request refund by the user whoes accountName is specified

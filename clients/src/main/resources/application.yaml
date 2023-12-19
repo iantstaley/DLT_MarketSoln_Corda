@@ -1,0 +1,11 @@
+buyer:
+  host: localhost:10006
+
+delivery:
+  host: localhost:10009
+
+bank:
+  host: localhost:10012
+
+shop:
+  host: localhost:10015
